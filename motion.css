@@ -1,0 +1,29 @@
+/* Opening, closing, internal navigation and content changes share one calm motion system. */
+html[data-page-motion=leaving] .page{pointer-events:none}
+dialog[data-motion-state=closing]{pointer-events:none}
+dialog[data-motion-state=opening]::backdrop{animation:overlay-arrive 350ms cubic-bezier(.22,1,.36,1) both}
+dialog[data-motion-state=closing]::backdrop{animation:overlay-leave 230ms ease-in both}
+@keyframes overlay-arrive{from{background-color:#25291e00;backdrop-filter:blur(0)}to{background-color:#25291e70;backdrop-filter:blur(4px)}}
+@keyframes overlay-leave{from{background-color:#25291e70;backdrop-filter:blur(4px)}to{background-color:#25291e00;backdrop-filter:blur(0)}}
+.dialog-body{min-width:0;transform-origin:center top}
+.navigation{transform-origin:top right;transform:translateY(-9px) scale(.975);transition:opacity 220ms ease,transform 250ms cubic-bezier(.22,1,.36,1),visibility 0s linear 250ms}
+.navigation.open{transform:translateY(0) scale(1);transition:opacity 270ms ease,transform 320ms cubic-bezier(.22,1,.36,1),visibility 0s linear 0s}
+.navigation a{opacity:0;translate:0 -5px;transition:opacity 140ms ease,translate 180ms ease}
+.navigation.open a{opacity:1;translate:0 0;transition:opacity 230ms ease,translate 280ms cubic-bezier(.22,1,.36,1)}
+.navigation.open a:nth-child(2){transition-delay:25ms}.navigation.open a:nth-child(3){transition-delay:50ms}.navigation.open a:nth-child(4){transition-delay:75ms}.navigation.open a:nth-child(5){transition-delay:100ms}
+#catalog-results{min-width:0;transform-origin:center top}
+.request-dialog .field-error:not(:empty){animation:message-arrive 200ms ease both}
+.share-status:not(:empty){animation:message-arrive 240ms ease both}
+@keyframes message-arrive{from{opacity:0;translate:0 -4px}to{opacity:1;translate:0 0}}
+@media(prefers-reduced-motion:reduce){
+  .navigation,.navigation.open,.navigation a,.navigation.open a{transition:none!important;translate:none!important;transform:none!important}
+  dialog::backdrop,.request-dialog .field-error,.share-status{animation:none!important}
+}
+
+.page{animation:page-arrive 380ms cubic-bezier(.22,1,.36,1) both}
+@keyframes page-arrive{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.dialog-body{display:flow-root}
+.dialog-body>#dialog-description{color:var(--muted);font-size:15px;line-height:1.6;margin-bottom:24px}
+.request-dialog .dialog-body>h2{font-size:34px;margin-bottom:16px;max-width:430px}
+@media(max-width:700px){.request-dialog .dialog-body>h2{font-size:30px;margin-bottom:15px;line-height:1.04}}
+@media(prefers-reduced-motion:reduce){.page{animation:none!important}}

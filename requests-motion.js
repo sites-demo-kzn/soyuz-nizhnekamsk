@@ -24,7 +24,7 @@
   const date=new Date(),localDate=new Date(date.getTime()-date.getTimezoneOffset()*60000).toISOString().slice(0,10);form.elements.viewingDate.min=localDate;
   document.querySelector('#viewing-fields').hidden=!options.viewing;
   form.querySelector('button[type="submit"]').textContent=options.viewing?'Записаться на просмотр':'Оставить пожелания';
-  if(!dialog.open)dialog.showModal();
+  SoyuzMotion.openDialog(dialog);
  }
  form.addEventListener('submit',async event=>{
   event.preventDefault();if(busy||!validate())return;busy=true;
@@ -40,10 +40,12 @@
     let saved=[];try{saved=JSON.parse(sessionStorage.getItem('soyuz-requests')||'[]');if(!Array.isArray(saved))saved=[];}catch{}
     sessionStorage.setItem('soyuz-requests',JSON.stringify([...saved.slice(-19),payload]));
    }
+   const displayed=await SoyuzMotion.swap(dialog.querySelector('.dialog-body'),()=>{
    form.hidden=true;success.hidden=false;
    const title=document.querySelector('#request-success-title');title.textContent=context.viewing?'Запрос на просмотр сохранён':'Ваши пожелания сохранены';
    document.querySelector('#request-success-text').textContent=(context.viewing?'Свяжемся с вами, чтобы согласовать удобное время просмотра.':'Свяжемся с вами, когда появится подходящий вариант.')+' Ваш телефон: '+formatPhone(payload.phone)+'.';
-   title.focus();
+   });
+   if(displayed&&dialog.open)document.querySelector('#request-success-title').focus();
   }catch{document.querySelector('#request-error').textContent='Не удалось сохранить запрос. Попробуйте ещё раз или позвоните нам: +7 908 332-90-32.';document.querySelector('#request-error').focus();}
   finally{busy=false;button.disabled=false;button.textContent=original;}
  });

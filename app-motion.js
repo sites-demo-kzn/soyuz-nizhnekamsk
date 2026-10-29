@@ -19,7 +19,7 @@
  const toggle=document.querySelector('.menu-toggle'),navigation=document.querySelector('#navigation');
  function closeMenu(){if(!toggle||!navigation)return;toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-label','Открыть меню');navigation.classList.remove('open');navigation.inert=true;}
  if(toggle&&navigation){toggle.addEventListener('click',()=>{const open=toggle.getAttribute('aria-expanded')!=='true';toggle.setAttribute('aria-expanded',String(open));toggle.setAttribute('aria-label',open?'Закрыть меню':'Открыть меню');navigation.classList.toggle('open',open);navigation.inert=!open;});navigation.addEventListener('click',event=>{if(event.target.closest('a'))closeMenu();});document.addEventListener('click',event=>{if(!event.target.closest('.header'))closeMenu();});document.addEventListener('keydown',event=>{if(event.key==='Escape'&&toggle.getAttribute('aria-expanded')==='true'){closeMenu();toggle.focus();}});}
- document.querySelectorAll('dialog').forEach(dialog=>{dialog.querySelectorAll('[data-close-dialog],.dialog-close').forEach(button=>button.addEventListener('click',()=>dialog.close()));dialog.addEventListener('click',event=>{if(event.target!==dialog)return;const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)dialog.close();});});
+ document.querySelectorAll('dialog').forEach(dialog=>{dialog.querySelectorAll('[data-close-dialog],.dialog-close').forEach(button=>button.addEventListener('click',()=>SoyuzMotion.closeDialog(dialog)));dialog.addEventListener('click',event=>{if(event.target!==dialog)return;const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)SoyuzMotion.closeDialog(dialog);});});
  const content={
   buy:{title:'Подберём квартиру',text:'Расскажите, какую квартиру вы ищете: район, количество комнат, бюджет и удобные сроки. Обсудим ваш запрос с риэлтором агентства СОЮЗ.',subject:'Подбор квартиры в Нижнекамске'},
   sell:{title:'Продажа недвижимости',text:'Планируете продать недвижимость в Нижнекамске? Расскажите об объекте и ваших пожеланиях. Обсудим условия и дальнейшие шаги.',subject:'Продажа недвижимости'},
@@ -28,7 +28,18 @@
   'all-services':{title:'Недвижимость с СОЮЗ',text:'Выберите задачу, чтобы узнать подробнее и связаться с агентством.',options:['buy','sell','agent','land']}
  };
  const labels={buy:'Покупка квартиры',sell:'Продажа недвижимости',agent:'Риэлторские услуги',land:'Участки в Крыму'},serviceDialog=document.querySelector('#service-dialog');
- function openService(key){const item=content[key];if(!item||!serviceDialog)return;serviceDialog.querySelector('#dialog-title').textContent=item.title;serviceDialog.querySelector('#dialog-description').textContent=item.text;const options=serviceDialog.querySelector('#dialog-options');options.replaceChildren();(item.options||[]).forEach(option=>{const button=document.createElement('button');button.className='dialog-option';button.type='button';button.textContent=labels[option];button.addEventListener('click',()=>openService(option));options.append(button);});const request=serviceDialog.querySelector('[data-service-request]');request.hidden=!!item.options;request.onclick=()=>{serviceDialog.close();window.SoyuzRequests.open({title:'Обсудим вашу задачу',subject:item.subject,wish:item.subject});};if(!serviceDialog.open)serviceDialog.showModal();}
+ function openService(key){
+  const item=content[key];if(!item||!serviceDialog)return;
+  const update=()=>{
+   serviceDialog.querySelector('#dialog-title').textContent=item.title;serviceDialog.querySelector('#dialog-description').textContent=item.text;
+   const options=serviceDialog.querySelector('#dialog-options');options.replaceChildren();
+   (item.options||[]).forEach(option=>{const button=document.createElement('button');button.className='dialog-option';button.type='button';button.textContent=labels[option];button.addEventListener('click',()=>openService(option));options.append(button);});
+   const request=serviceDialog.querySelector('[data-service-request]');request.hidden=!!item.options;
+   request.onclick=async()=>{await SoyuzMotion.closeDialog(serviceDialog);window.SoyuzRequests.open({title:'Обсудим вашу задачу',subject:item.subject,wish:item.subject});};
+  };
+  if(serviceDialog.open)SoyuzMotion.swap(serviceDialog.querySelector('.dialog-body'),update);else{update();SoyuzMotion.openDialog(serviceDialog);}
+ }
+
  document.querySelectorAll('[data-dialog]').forEach(button=>button.addEventListener('click',()=>openService(button.dataset.dialog)));
  document.querySelectorAll('[data-request]').forEach(button=>button.addEventListener('click',()=>window.SoyuzRequests.open({title:'Подберём ваш вариант',subject:'Подбор недвижимости'})));
  document.querySelectorAll('[data-year],#year').forEach(el=>el.textContent=String(new Date().getFullYear()));
