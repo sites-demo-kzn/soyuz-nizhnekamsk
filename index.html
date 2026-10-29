@@ -9,6 +9,7 @@
   <meta name="description" content="Риэлторские услуги в Нижнекамске и земельные участки в Крыму. Агентство СОЮЗ: ул. Корабельная, 42, ТЦ Сити Центр, 3 этаж. Приём по предварительной записи.">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="style.css">
+  <script src="listings.js" defer></script>
   <script src="app.js" defer></script>
 </head>
 <body>
@@ -22,6 +23,7 @@
   <symbol id="i-users" viewBox="0 0 24 24"><path d="M3 20v-2a5 5 0 0 1 10 0v2m2-7a5 5 0 0 1 6 5v2M14 4a4 4 0 0 1 0 8"/><circle cx="8" cy="7" r="4"/></symbol>
   <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 11a9 9 0 0 1-9 9 10 10 0 0 1-4-.8L3 21l1.7-5A9 9 0 1 1 21 11Z"/><path d="M8 6.5c-3 3 3 9 6 9l2-2-3-2-1 1c-1.5-.5-2-1-2.5-2.5l1-1Z"/></symbol>
   <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 3 2.5 5.5c0 8 8 16 16 16L21 19l-5-4-2 2c-3.2-1.2-5.8-3.8-7-7l2-2Z"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/></symbol>
   <symbol id="i-check" viewBox="0 0 24 24"><path d="m12 2 8 4v6c0 5-8 10-8 10S4 17 4 12V6Zm-4 10 3 3 5-6"/></symbol>
 </defs></svg>
 <a class="skip-link" href="#main">Перейти к содержимому</a>
@@ -52,10 +54,10 @@
       </div>
     </section>
     <section id="properties" class="section properties" aria-labelledby="properties-title">
-      <div class="section-heading"><h2 id="properties-title">Найдём ваш вариант</h2><button class="text-link" data-dialog="selection">Подобрать<svg><use href="#i-arrow"/></svg></button></div>
+      <div class="section-heading"><h2 id="properties-title">Актуальные объекты</h2><button class="text-link" data-dialog="catalog">Смотреть все<svg><use href="#i-arrow"/></svg></button></div>
       <div class="properties-grid">
-        <button class="property-card reveal" data-dialog="buy"><img src="assets/interior.webp" width="1024" height="1536" alt="Уютный светлый интерьер" loading="lazy"><span class="property-body"><strong>Квартиры в Нижнекамске</strong><span class="property-location">Для жизни и новых планов</span><span class="property-action">Обсудить подбор<svg><use href="#i-arrow"/></svg></span></span></button>
-        <button class="property-card reveal" data-dialog="land"><img src="assets/crimea.webp" width="1536" height="1024" alt="Зелёные холмы и морское побережье" loading="lazy"><span class="property-body"><strong>Земельные участки в Крыму</strong><span class="property-location">Место для вашей истории</span><span class="property-action">Узнать подробнее<svg><use href="#i-arrow"/></svg></span></span></button>
+        <article class="property-card reveal"><button class="property-open" data-dialog="apartment-1"><img src="assets/interior.webp" width="1024" height="1536" alt="Светлая гостиная в спокойных оттенках" loading="lazy"><span class="property-body"><strong>1-комнатная квартира</strong><span class="property-location">пр. Строителей, 18</span><span class="property-price">5 200 000 ₽</span></span></button><button class="favorite" data-favorite="apartment-1" aria-label="Добавить 1-комнатную квартиру в избранное" aria-pressed="false"><svg><use href="#i-heart"/></svg></button></article>
+        <article class="property-card reveal"><button class="property-open" data-dialog="apartment-2"><img src="assets/kitchen.webp" width="1536" height="1024" alt="Кухня с обеденной зоной и деревянной мебелью" loading="lazy"><span class="property-body"><strong>2-комнатная квартира</strong><span class="property-location">ул. Южная, 12</span><span class="property-price">6 950 000 ₽</span></span></button><button class="favorite" data-favorite="apartment-2" aria-label="Добавить 2-комнатную квартиру в избранное" aria-pressed="false"><svg><use href="#i-heart"/></svg></button></article>
       </div>
     </section>
     <section id="about" class="section about" aria-labelledby="about-title">
@@ -77,6 +79,7 @@
   </main>
   <footer class="footer"><span>© <span id="year">2026</span> Агентство «Союз» · ИП Сычева Ю. Ю.</span><a href="#" aria-label="Наверх">Наверх<svg><use href="#i-arrow"/></svg></a></footer>
 </div>
-<dialog id="service-dialog" aria-labelledby="dialog-title"><button class="dialog-close" aria-label="Закрыть окно" type="button">×</button><p class="eyebrow">АГЕНТСТВО СОЮЗ</p><h2 id="dialog-title"></h2><p id="dialog-description"></p><div id="dialog-options"></div><a id="dialog-whatsapp" class="button button-primary" href="https://wa.me/79083329032" target="_blank" rel="noopener noreferrer">Обсудить в WhatsApp<svg><use href="#i-arrow"/></svg></a><a class="dialog-phone" href="tel:+79083329032">Позвонить: +7 908 332-90-32</a></dialog>
+<dialog id="service-dialog" aria-labelledby="dialog-title"><button class="dialog-close" aria-label="Закрыть окно" type="button">×</button><p class="eyebrow">АГЕНТСТВО СОЮЗ</p><h2 id="dialog-title"></h2><img id="dialog-image" src="assets/interior.webp" hidden alt="Интерьер квартиры"><p id="dialog-features" hidden></p><p id="dialog-description"></p><div id="dialog-options"></div><a id="dialog-whatsapp" class="button button-primary" href="https://wa.me/79083329032" target="_blank" rel="noopener noreferrer">Обсудить в WhatsApp<svg><use href="#i-arrow"/></svg></a><a class="dialog-phone" href="tel:+79083329032">Позвонить: +7 908 332-90-32</a></dialog>
+<div class="sr-only" id="favorite-status" aria-live="polite"></div>
 </body>
 </html>
