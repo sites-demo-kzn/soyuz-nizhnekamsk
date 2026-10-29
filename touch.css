@@ -1,0 +1,30 @@
+/* Brief press feedback across the existing light/olive interface. */
+:is(.button,.service-card,.property-open,.favorite,.tool-button,.menu-toggle,.dialog-option,.dialog-close,.text-link,.reset-link,.navigation a,.contact-line,.contact-map,.property-photo,.footer a){
+  transition-property:background-color,color,border-color,box-shadow,transform,scale,translate;
+  transition-duration:180ms;
+  transition-timing-function:cubic-bezier(.2,.7,.3,1);
+  transform-origin:center;
+}
+:where(.button,.service-card,.property-open,.tool-button,.dialog-option,.contact-map,.property-photo):active{
+  scale:.98;
+  translate:0 1px;
+}
+:where(.favorite,.menu-toggle,.dialog-close):active{scale:.9}
+:where(.text-link,.reset-link,.navigation a,.contact-line,.footer a):active{opacity:.76;scale:.985}
+.room-options label>span:not(.tap-ripple){transition:background-color 180ms,color 180ms,border-color 180ms,scale 140ms}
+.rooms-filter:not(:disabled) .room-options label:active>span:not(.tap-ripple){scale:.94}
+.tap-surface{isolation:isolate;overflow:hidden}
+.tap-static{position:relative}
+.tap-surface>.tap-ripple{
+  position:absolute;display:block;pointer-events:none;z-index:2;border:0;border-radius:50%;padding:0;margin:0;min-height:0;
+  background:rgba(100,111,72,.16);opacity:0;transform:scale(0);animation:tap-wave 520ms cubic-bezier(.16,.7,.3,1) forwards;
+}
+.button-primary>.tap-ripple{background:rgba(255,255,255,.26)}
+.property-open>.tap-ripple,.property-photo>.tap-ripple{background:rgba(250,249,245,.28)}
+@keyframes tap-wave{from{opacity:.75;transform:scale(0)}to{opacity:0;transform:scale(1)}}
+.filters input:not([type=radio]):not([type=checkbox]),.filters select,.request-dialog input:not([type=checkbox]),.request-dialog select,.request-dialog textarea{transition:border-color 160ms,box-shadow 160ms}
+.filters input:not([type=radio]):not([type=checkbox]):focus,.filters select:focus,.request-dialog input:not([type=checkbox]):focus,.request-dialog select:focus,.request-dialog textarea:focus{border-color:var(--olive);box-shadow:0 0 0 3px #555d3d12}
+@media(prefers-reduced-motion:reduce){
+  :where(.button,.service-card,.property-open,.favorite,.tool-button,.menu-toggle,.dialog-option,.dialog-close,.text-link,.reset-link,.navigation a,.contact-line,.contact-map,.property-photo,.footer a),.room-options label>span:not(.tap-ripple){transition:none!important;scale:1!important;translate:none!important}
+  .tap-ripple{display:none!important;animation:none!important}
+}
